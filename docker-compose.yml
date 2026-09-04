@@ -1,0 +1,9 @@
+# Optional local / Dokploy Compose deploy
+services:
+  sfxlab:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    restart: unless-stopped
