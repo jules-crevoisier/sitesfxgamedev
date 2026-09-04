@@ -31,22 +31,31 @@ npm run preview
 ## Deploy Dokploy (recommandé)
 
 1. Pousse le repo sur GitHub / GitLab  
-2. Dans Dokploy → **New Application** → connecte le repo  
-3. **Build Type :** `Dockerfile`  
-4. **Dockerfile path :** `Dockerfile`  
-5. **Docker context :** `.`  
-6. Domaine → port **`80`**  
-7. Deploy  
+2. Dans Dokploy → **Docker Compose** (ou Application) → connecte le repo  
+3. Branche : `main`  
+4. Compose file : `docker-compose.yml`  
+5. Domaine → pointe vers le service **`sfxlab`**, port **`80`** (interne)  
+6. Deploy  
 
-Les headers `Cross-Origin-Opener-Policy` + `Cross-Origin-Embedder-Policy` sont dans `nginx.conf` (indispensables pour ffmpeg.wasm).
+> Ne mappe pas `80:80` sur l’hôte : Dokploy / Traefik route le domaine vers le conteneur.  
+> Les headers `Cross-Origin-Opener-Policy` + `Cross-Origin-Embedder-Policy` sont dans `nginx.conf` (indispensables pour ffmpeg.wasm).
 
 ### Local Docker
 
 ```powershell
-docker compose up --build
+docker compose -f docker-compose.yml up --build
+# Si tu veux ouvrir en local sur le port 8080 :
+# ajoute temporairement ports: ["8080:80"] sous sfxlab
 ```
 
-Ouvre `http://localhost`.
+Ou build direct :
+
+```powershell
+docker build -t sfxlab .
+docker run --rm -p 8080:80 sfxlab
+```
+
+Ouvre `http://localhost:8080`.
 
 ## Qualité OGG
 

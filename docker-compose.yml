@@ -1,9 +1,10 @@
-# Optional local / Dokploy Compose deploy
+# Dokploy / Compose — do NOT bind host:80 (Traefik handles routing)
 services:
   sfxlab:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "80:80"
+    # Internal only — map your Dokploy domain to this port (80)
+    expose:
+      - "80"
     restart: unless-stopped
